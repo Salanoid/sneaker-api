@@ -1,0 +1,2 @@
+class SolecollectorScraperController < ApplicationController
+end

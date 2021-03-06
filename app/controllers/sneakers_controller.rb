@@ -2,8 +2,9 @@ class SneakersController < ApplicationController
   def index 
     create_sneaker_release
     @sneaker_release = SneakerRelease.all
-    
-    render json: @sneaker_release.to_json(except: [:created_at, :updated_at])
+
+    @sneaker_release.first.date.to_date.respond_to? :strftime
+    render json: @sneaker_release.to_json(except: [:id, :created_at, :updated_at])
   end
 
   private
@@ -12,10 +13,16 @@ class SneakersController < ApplicationController
     releases_scraper = SolecollectorScraperController.new.scrap
     releases_scraper.each do |release|
       unless release_exists?(release[:name])
+        date = 
+          release[:date].to_date.respond_to?(:strftime) ? release[:date].to_date : release[:date]
+
+        price =
+          release[:price].strip!.gsub(/\n/, '').gsub(' ', '').gsub('$', ' $').strip
+
         SneakerRelease.create!(
           name: release[:name],
-          price: release[:price].strip!,
-          date: release[:date],
+          price: price,
+          date: date,
           image: release[:image]
         )
       end

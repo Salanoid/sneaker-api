@@ -14,5 +14,7 @@ class SolecollectorScraperController < ApplicationController
           image: realease.css('img').attr('src').value
         }
     end
+
+    solecollector_sneakers_info
   end
 end

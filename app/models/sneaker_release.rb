@@ -1,0 +1,2 @@
+class SneakerRelease < ApplicationRecord
+end
